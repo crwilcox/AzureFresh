@@ -5,9 +5,6 @@ __pycache__/
 # PTVS analysis
 .ptvs/
 
-# Virtual Environment
-/PyCon2015AzureTutorial/env/
-
 # Build results
 /bin/
 /obj/
@@ -42,3 +39,4 @@ $RECYCLE.BIN/
 .idea
 src/build
 *.iml
+/doc/_build
