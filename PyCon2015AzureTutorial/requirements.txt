@@ -1,1 +1,2 @@
 django<2
+django-registration-redux==1.1
