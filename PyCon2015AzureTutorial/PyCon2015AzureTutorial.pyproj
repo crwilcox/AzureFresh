@@ -49,9 +49,27 @@
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
+    <Folder Include="app\templates\registration\" />
     <Folder Include="PyCon2015AzureTutorial\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\templates\app\register.html" />
+    <Content Include="app\templates\base.html" />
+    <Content Include="app\templates\index.html" />
+    <Content Include="app\templates\registration\activate.html" />
+    <Content Include="app\templates\registration\activation_email.txt" />
+    <Content Include="app\templates\registration\activation_email_subject.txt" />
+    <Content Include="app\templates\registration\login.html" />
+    <Content Include="app\templates\registration\logout.html" />
+    <Content Include="app\templates\registration\password_change_done.html" />
+    <Content Include="app\templates\registration\password_change_form.html" />
+    <Content Include="app\templates\registration\password_reset_complete.html" />
+    <Content Include="app\templates\registration\password_reset_confirm.html" />
+    <Content Include="app\templates\registration\password_reset_done.html" />
+    <Content Include="app\templates\registration\password_reset_email.html" />
+    <Content Include="app\templates\registration\password_reset_form.html" />
+    <Content Include="app\templates\registration\registration_complete.html" />
+    <Content Include="app\templates\registration\registration_form.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

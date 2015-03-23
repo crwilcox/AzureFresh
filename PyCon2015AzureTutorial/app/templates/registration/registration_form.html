@@ -1,0 +1,14 @@
+{% extends "app/layout.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<h2>Register</h2>
+
+<form method="post" action="?next={{ next }}">{% csrf_token %}
+
+  {{ form.as_p }}
+
+  <input type="submit" value="{% trans 'Submit' %}" />
+</form>
+{% endblock %}
