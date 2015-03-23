@@ -53,9 +53,6 @@
     <Folder Include="PyCon2015AzureTutorial\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\templates\app\register.html" />
-    <Content Include="app\templates\base.html" />
-    <Content Include="app\templates\index.html" />
     <Content Include="app\templates\registration\activate.html" />
     <Content Include="app\templates\registration\activation_email.txt" />
     <Content Include="app\templates\registration\activation_email_subject.txt" />
@@ -68,6 +65,7 @@
     <Content Include="app\templates\registration\password_reset_done.html" />
     <Content Include="app\templates\registration\password_reset_email.html" />
     <Content Include="app\templates\registration\password_reset_form.html" />
+    <Content Include="app\templates\registration\profile.html" />
     <Content Include="app\templates\registration\registration_complete.html" />
     <Content Include="app\templates\registration\registration_form.html" />
     <Content Include="requirements.txt" />

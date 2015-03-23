@@ -1,0 +1,73 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+<p>Profile.</p>
+
+<div class="row">
+    <label class="col-md-2 control-label">User name:</label>
+    <div class="col-md-10">
+        {{ user_profile.user.username  }}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">First Name:</label>
+    <div class="col-md-10">
+        {{ user_profile.user.first_name }}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">Last Name:</label>
+    <div class="col-md-10">
+        {{ user_profile.user.last_name }}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">Email:</label>
+    <div class="col-md-10">
+        {{ user_profile.user.email }}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">Last Login</label>
+    <div class="col-md-10">
+        {{ user_profile.user.last_login }}
+    </div>
+</div>
+<div class="row">
+    <label class="col-md-2 control-label">Date Joined:</label>
+    <div class="col-md-10">
+        {{ user_profile.user.date_joined }}
+    </div>
+</div>
+
+
+<h4> Edit Profile:</h4>
+<form action="/profile" method="post" class="form-horizontal">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input type="hidden" name="next" value="{% url 'profile' %}" />
+    <input type="submit" value="Save Changes" class="btn btn-default" />
+</form>
+
+{% if form_errors %}
+    <div class="validation-summary-errors">
+        There are errors in your input.  Please resolve these issues.
+        {% for i, j in form_errors %}
+            <div class="row">
+                <label class="col-md-2 control-label">{{ i }}:</label>
+                <div class="col-md-10">
+                    {{ j }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock %}
+
