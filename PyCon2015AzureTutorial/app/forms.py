@@ -34,6 +34,12 @@ class UserProfileForm(forms.ModelForm):
             'first_name',
             'last_name',
             'email',
+            'url',
+            'address_1',
+            'address_2',
+            'city',
+            'state',
+            'zip_code',
             ]
 
     def save(self, *args, **kwargs):

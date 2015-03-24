@@ -11,17 +11,25 @@ from django.db.models.signals import post_save
 from django.core.exceptions import ValidationError
 def validate_true(value):
     if value is not True:
-        raise ValidationError("This value is required to be true...")
+        raise ValidationError("This value is required to be true.")
+
+def validate_not_empty(value):
+    if not value:
+        raise ValidationError("Field must not be blank.")
 
 class UserProfile(models.Model):
     # This field is required.
     user = models.OneToOneField(User)
 
-    # Other fields here
-    accepted_eula = models.BooleanField(default = False, validators=[validate_true])
-    favorite_animal = models.CharField(max_length=20, default="Dragons.")
-    url = models.URLField("Website", blank=True)
+    # Address Fields
+    address_1 = models.CharField(max_length=100, validators=[validate_not_empty])
+    address_2 = models.CharField(max_length=100)
+    city = models.CharField(max_length=50, validators=[validate_not_empty])
+    state = models.CharField(max_length=2, validators=[validate_not_empty])
+    zip_code = models.CharField(max_length=10, validators=[validate_not_empty]) # 12345-1234.  Will this be good for Canada?
 
+    # Other fields here
+    url = models.URLField("Website", blank=True)
 
 # create the user profile on post save of user accounts
 def create_user_profile(sender, instance, created, **kwargs):
