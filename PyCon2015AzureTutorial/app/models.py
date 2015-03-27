@@ -22,8 +22,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     # Address Fields
-    address_1 = models.CharField(max_length=100, validators=[validate_not_empty])
-    address_2 = models.CharField(max_length=100)
+    address = models.CharField(max_length=200, validators=[validate_not_empty])
     city = models.CharField(max_length=50, validators=[validate_not_empty])
     state = models.CharField(max_length=2, validators=[validate_not_empty])
     zip_code = models.CharField(max_length=10, validators=[validate_not_empty]) # 12345-1234.  Will this be good for Canada?

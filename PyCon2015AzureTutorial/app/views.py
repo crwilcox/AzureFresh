@@ -72,7 +72,11 @@ def profile(request):
             # Transform field name to label name and put in tuple with errors
             form_errors = []
             for i in form.errors:
-                form_errors.append((form.fields[i].label, form.errors[i]))
+                try:
+                    label = form.fields[i].label if form.fields[i].label is not None else i
+                    form_errors.append((label, form.errors[i]))
+                except:
+                    form_errors.append(('Error', form.errors[i]))
 
     """Renders the profile page."""
     assert isinstance(request, HttpRequest)

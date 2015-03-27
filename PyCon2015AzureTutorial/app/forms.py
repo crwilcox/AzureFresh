@@ -30,17 +30,14 @@ class UserProfileForm(forms.ModelForm):
         self.fields['email'].initial = self.instance.user.email
 
         # Order Elements to make the page look better
-        self.fields.keyOrder = [
-            'first_name',
+        self.fields.keyOrder = ['first_name',
             'last_name',
             'email',
             'url',
-            'address_1',
-            'address_2',
+            'address',
             'city',
             'state',
-            'zip_code',
-            ]
+            'zip_code',]
 
     def save(self, *args, **kwargs):
         super(UserProfileForm, self).save(*args, **kwargs)
@@ -48,6 +45,53 @@ class UserProfileForm(forms.ModelForm):
         self.instance.user.last_name = self.cleaned_data.get('last_name')
         self.instance.user.email = self.cleaned_data.get('email')
         self.instance.user.save()
+
+    def clean(self):
+        cleaned_data = super(UserProfileForm, self).clean()
+        
+        address = cleaned_data['address'] if 'address' in cleaned_data.keys() else ''
+        city = cleaned_data['city'] if 'city' in cleaned_data.keys() else ''
+        state = cleaned_data['state'] if 'state' in cleaned_data.keys() else ''
+        zip_code = cleaned_data['zip_code'] if 'zip_code' in cleaned_data.keys() else ''
+
+        import requests
+        from xml.etree import ElementTree
+
+        # Verify the address using the data marketplace
+        # https://datamarket.azure.com/dataset/melissadata/addresscheck
+        #https://api.datamarket.azure.com/DNB/CleanseAddress/v1/GlobalAddressValidation?Address=%277583%20Old%20Redmond%20Rd%27&City=%27Redmond%27&State=%27WA%27&PostalCode=%2798052%27&Country=%27US%27
+
+        full_address = "'{}, {}, {} {}'".format(address, city, state, zip_code)
+        uri = "https://api.datamarket.azure.com/MelissaData/AddressCheck/v1/SuggestAddresses"
+        data = {'Address':full_address, 'MaximumSuggestions':1, 'MinimumConfidence':0.25}
+
+        account_key = 'PAAWRFiAqLKRLswTxyVxT9wbb4torRFs/HpZowgPrDg='
+        req = requests.get(uri, params=data, auth=('', account_key))
+
+        if not req.ok:
+            raise Exception(req.text)
+        text = req.text
+        doc = ElementTree.fromstring(text)
+
+        a = doc.find('{http://www.w3.org/2005/Atom}entry')
+        b = a.find('{http://www.w3.org/2005/Atom}content')
+        c = b.find('{http://schemas.microsoft.com/ado/2007/08/dataservices/metadata}properties')
+        new_address = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}AddressLine')
+        new_suite = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}Suite')
+        new_address_combined = "{} {}".format(new_address, new_suite).strip()
+        new_city = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}City')
+        new_state = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}State')
+        new_zip_code = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}ZipCode')
+
+        if new_address_combined != address or new_city != city or new_state != state or new_zip_code != zip_code:
+            # Correct the address
+            cleaned_data['address'] = new_address_combined
+            cleaned_data['city'] = new_city
+            cleaned_data['state'] = new_state
+            cleaned_data['zip_code'] = new_zip_code
+            raise forms.ValidationError("Your address was validated and updated with corrected content.  Please submit again if it is correct.")
+
+        return cleaned_data
 
     class Meta:
         model = UserProfile
