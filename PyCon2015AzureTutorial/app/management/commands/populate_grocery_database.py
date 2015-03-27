@@ -5,6 +5,7 @@ import csv
 class Command(BaseCommand):
     args = ''
     help = ''
+    BASE_IMAGE_URL = 'http://pycongrocerydemo.blob.core.windows.net/grocery-images/'
 
     def _populate_db(self):
         import os
@@ -12,7 +13,7 @@ class Command(BaseCommand):
             reader = csv.reader(csvfile)
             for row in reader:
                 print(row)
-                p = Product(name=row[0], price=row[1], image_link=row[2], description=row[3])
+                p = Product(name=row[0], price=row[1], image_link=BASE_IMAGE_URL + row[2], description=row[3])
                 p.save()
 
     def handle(self, *args, **options):

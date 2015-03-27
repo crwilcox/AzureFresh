@@ -47,24 +47,21 @@ class UserProfileForm(forms.ModelForm):
         self.instance.user.save()
 
     def clean(self):
-        cleaned_data = super(UserProfileForm, self).clean()
-        
-        address = cleaned_data['address'] if 'address' in cleaned_data.keys() else ''
-        city = cleaned_data['city'] if 'city' in cleaned_data.keys() else ''
-        state = cleaned_data['state'] if 'state' in cleaned_data.keys() else ''
-        zip_code = cleaned_data['zip_code'] if 'zip_code' in cleaned_data.keys() else ''
-
         import requests
         from xml.etree import ElementTree
+        
+        cleaned_data = super(UserProfileForm, self).clean()
+        
+        address = cleaned_data.get('address', '')
+        city = cleaned_data.get('city', '')
+        state = cleaned_data.get('state', '')
+        zip_code = cleaned_data.get('zip_code', '')
+        full_address = "'{}, {}, {} {}'".format(address, city, state, zip_code)
 
         # Verify the address using the data marketplace
         # https://datamarket.azure.com/dataset/melissadata/addresscheck
-        #https://api.datamarket.azure.com/DNB/CleanseAddress/v1/GlobalAddressValidation?Address=%277583%20Old%20Redmond%20Rd%27&City=%27Redmond%27&State=%27WA%27&PostalCode=%2798052%27&Country=%27US%27
-
-        full_address = "'{}, {}, {} {}'".format(address, city, state, zip_code)
         uri = "https://api.datamarket.azure.com/MelissaData/AddressCheck/v1/SuggestAddresses"
         data = {'Address':full_address, 'MaximumSuggestions':1, 'MinimumConfidence':0.25}
-
         account_key = 'PAAWRFiAqLKRLswTxyVxT9wbb4torRFs/HpZowgPrDg='
         req = requests.get(uri, params=data, auth=('', account_key))
 

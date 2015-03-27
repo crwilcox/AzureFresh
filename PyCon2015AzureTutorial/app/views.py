@@ -12,8 +12,6 @@ from app.models import UserProfile
 from app.forms import UserProfileForm
 from app.models import Product
 
-BASE_IMAGE_URL = 'http://pycongrocerydemo.blob.core.windows.net/grocery-images/'
-
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
@@ -27,36 +25,7 @@ def home(request):
         {
             'title':'Home Page',
             'year':datetime.now().year,
-            'base_image_url':BASE_IMAGE_URL,
             'products':products,
-        })
-    )
-
-def contact(request):
-    """Renders the contact page."""
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/contact.html',
-        context_instance = RequestContext(request,
-        {
-            'title':'Contact',
-            'message':'Your contact page.',
-            'year':datetime.now().year,
-        })
-    )
-
-def about(request):
-    """Renders the about page."""
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/about.html',
-        context_instance = RequestContext(request,
-        {
-            'title':'About',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
         })
     )
 
@@ -64,14 +33,14 @@ def product(request):
     assert isinstance(request, HttpRequest)
 
     try:
+        import requests
+
         # get id
         id = int(request.path.split('/')[-1])
         product = Product.objects.get(id=id)
 
         # use frequently bought together to get recommendations
-        # https://datamarket.azure.com/dataset/explore/amla/mba
-        # https://api.datamarket.azure.com/data.ashx/amla/mba/v1/Score?Id=%27Train%27&Item=%2710%27
-        import requests
+        # https://datamarket.azure.com/dataset/amla/mba
         uri = 'https://api.datamarket.azure.com/data.ashx/amla/mba/v1/Score'
         data = {'Id':'Train', 'Item':id}
         account_key = '5dxIeDWCg/dwSclY/mvt929z26mf/RnHKNXeqDN2he8='
@@ -80,6 +49,7 @@ def product(request):
         #req.text is a dictionary in text.  Can Eval it here...
         recommend = eval(req.text)['ItemSet'][1:]
         recommend_products = []
+
         # now that we have the id(s) of recomendations we should expand to the product
         for i in recommend:
             recommend_products.append(Product.objects.get(id=int(i)))
@@ -93,8 +63,7 @@ def product(request):
                 'title':product.name,
                 'description':product.description,
                 'price':product.price,
-                'image':BASE_IMAGE_URL + product.image_link,
-                'base_image_url':BASE_IMAGE_URL,
+                'image':product.image_link,
                 'recommended_products':recommend_products,
                 'year':datetime.now().year,
             })
@@ -145,4 +114,3 @@ def profile(request):
             'form_errors':form_errors,
         })
     )
-
