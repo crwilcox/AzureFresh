@@ -10,10 +10,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from app.models import UserProfile
 from app.forms import UserProfileForm
+from app.models import Product
+
+BASE_IMAGE_URL = 'http://pycongrocerydemo.blob.core.windows.net/grocery-images/'
 
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
+
+    products = Product.objects.order_by('id')
+
     return render(
         request,
         'app/index.html',
@@ -21,6 +27,8 @@ def home(request):
         {
             'title':'Home Page',
             'year':datetime.now().year,
+            'base_image_url':BASE_IMAGE_URL,
+            'products':products,
         })
     )
 
@@ -51,6 +59,32 @@ def about(request):
             'year':datetime.now().year,
         })
     )
+
+def product(request):
+    assert isinstance(request, HttpRequest)
+
+    try:
+        # get id
+        id = int(request.path.split('/')[-1])
+        product = Product.objects.get(id=id)
+
+        """Renders the product page."""
+        return render(
+            request,
+            'app/product.html',
+            context_instance = RequestContext(request,
+            {
+                'title':product.name,
+                'description':product.description,
+                'price':product.price,
+                'image':BASE_IMAGE_URL + product.image_link,
+                'year':datetime.now().year,
+            })
+        )
+
+    except:
+        return home(request)
+    
 
 @login_required
 def profile(request):

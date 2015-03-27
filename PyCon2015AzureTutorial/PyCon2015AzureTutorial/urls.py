@@ -14,6 +14,7 @@ from django.conf.urls import include
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'app.views.home', name='home'),
+    url(r'^product/', 'app.views.product', name='product'),
     url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url(r'^profile', 'app.views.profile', name='profile'),

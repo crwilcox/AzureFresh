@@ -6,6 +6,9 @@
     <RootNamespace>PyCon2015AzureTutorial</RootNamespace>
     <InterpreterId>{ebd93ec2-cbac-4d8e-9c27-19b325fa234a}</InterpreterId>
     <InterpreterVersion>3.4</InterpreterVersion>
+    <CommandLineArguments>
+    </CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -30,6 +33,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app\forms.py" />
+    <Compile Include="app\management\commands\populate_grocery_database.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\models.py" />
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
@@ -42,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="app\management\" />
+    <Folder Include="app\management\commands\" />
     <Folder Include="app\static\" />
     <Folder Include="app\static\app\" />
     <Folder Include="app\static\app\content\" />
@@ -53,6 +61,8 @@
     <Folder Include="PyCon2015AzureTutorial\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\management\commands\grocery.csv" />
+    <Content Include="app\templates\app\product.html" />
     <Content Include="app\templates\registration\activate.html" />
     <Content Include="app\templates\registration\activation_email.txt" />
     <Content Include="app\templates\registration\activation_email_subject.txt" />
