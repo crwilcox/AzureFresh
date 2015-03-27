@@ -5,7 +5,7 @@ import csv
 class Command(BaseCommand):
     args = ''
     help = ''
-    BASE_IMAGE_URL = 'http://pycongrocerydemo.blob.core.windows.net/grocery-images/'
+    BASE_IMAGE_URL = 'http://azurefresh.blob.core.windows.net/image-store/'
 
     def _populate_db(self):
         import os
