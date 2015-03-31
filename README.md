@@ -9,6 +9,10 @@
 ## Clone this Repo ##
 	git clone https://github.com/crwilcox/PyCon2015AzureTutorial.git
 
+
+## Install requirements from requirements.txt ##
+	pip install -r requirements.txt
+	
 ## Setup the database ##
 We need to setup the SQLite database. Run the syncdb command and setup a superuser (if desired) to your database.
 	
