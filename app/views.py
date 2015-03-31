@@ -39,20 +39,7 @@ def product(request):
         id = int(request.path.split('/')[-1])
         product = Product.objects.get(id=id)
 
-        # use frequently bought together to get recommendations
-        # https://datamarket.azure.com/dataset/amla/mba
-        uri = 'https://api.datamarket.azure.com/data.ashx/amla/mba/v1/Score'
-        data = {'Id':'Train', 'Item':id}
-        account_key = '5dxIeDWCg/dwSclY/mvt929z26mf/RnHKNXeqDN2he8='
-        req = requests.get(uri, params=data, auth=('', account_key))
-
-        #req.text is a dictionary in text.  Can Eval it here...
-        recommend = eval(req.text)['ItemSet'][1:]
-        recommend_products = []
-
-        # now that we have the id(s) of recomendations we should expand to the product
-        for i in recommend:
-            recommend_products.append(Product.objects.get(id=int(i)))
+        # Figure out recommended purchases.
 
         """Renders the product page."""
         return render(
@@ -64,7 +51,6 @@ def product(request):
                 'description':product.description,
                 'price':product.price,
                 'image':product.image_link,
-                'recommended_products':recommend_products,
                 'year':datetime.now().year,
             })
         )
