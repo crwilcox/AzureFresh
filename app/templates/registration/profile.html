@@ -1,40 +1,41 @@
 {% extends "app/layout.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 <h2>{{ title }}.</h2>
-<h3>{{ message }}</h3>
 
-<p>Profile.</p>
-
-<div class="row">
-    <label class="col-md-2 control-label">User name:</label>
-    <div class="col-md-10">
-        {{ user_profile.user.username  }}
-    </div>
-</div>
-<div class="row">
-    <label class="col-md-2 control-label">Last Login</label>
-    <div class="col-md-10">
-        {{ user_profile.user.last_login }}
-    </div>
-</div>
-<div class="row">
-    <label class="col-md-2 control-label">Date Joined:</label>
-    <div class="col-md-10">
-        {{ user_profile.user.date_joined }}
-    </div>
-</div>
-
-
-<h4> Edit Profile:</h4>
 <form action="/profile" method="post" class="form-horizontal">
-    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_user" class="control-label col-md-2">
+            User
+        </label>
+        <div class="controls col-md-8">
+            <input class="textinput textInput form-control" id="id_user" readonly="readonly" type="text" value="{{ user_profile.user.username }}" />
+        </div>
+    </div>
 
-    {{ form.as_p }}
+    <div class="form-group">
+        <label for="id_user" class="control-label col-md-2">
+            Last Login
+        </label>
+        <div class="controls col-md-8">
+            <input class="textinput textInput form-control" id="id_user" readonly="readonly" type="text" value="{{ user_profile.user.last_login }}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_user" class="control-label col-md-2">
+            Date Joined
+        </label>
+        <div class="controls col-md-8">
+            <input class="textinput textInput form-control" id="id_user" readonly="readonly" type="text" value="{{ user_profile.user.date_joined }}" />
+        </div>
+    </div>
+
+    {% crispy form %}
 
     <input type="hidden" name="next" value="{% url 'profile' %}" />
-    <input type="submit" value="Save Changes" class="btn btn-default" />
+    {#<input type="submit" value="Save Changes" class="btn btn-default" />#}
 </form>
 
 {% if form_errors %}

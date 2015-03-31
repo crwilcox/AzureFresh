@@ -5,6 +5,9 @@ Definition of forms.
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
+from crispy_forms.bootstrap import StrictButton
 from app.models import UserProfile
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -29,15 +32,22 @@ class UserProfileForm(forms.ModelForm):
         self.fields['last_name'].initial = self.instance.user.last_name
         self.fields['email'].initial = self.instance.user.email
 
-        # Order Elements to make the page look better
-        self.fields.keyOrder = ['first_name',
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(
+            'first_name',
             'last_name',
             'email',
             'url',
             'address',
             'city',
             'state',
-            'zip_code',]
+            'zip_code',
+        )
+        self.helper.add_input(Submit('submit', 'Save Changes'))
 
     def save(self, *args, **kwargs):
         super(UserProfileForm, self).save(*args, **kwargs)
