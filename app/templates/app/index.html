@@ -14,7 +14,7 @@
     {% endif %}
     <div class="col-md-2">
         <a href="{% url 'product' %}{{i.id}}">
-            <img src="{{base_image_url}}{{i.image_link}}" width="150" />
+            <img src="{{base_image_url}}{{i.image_link}}" width="160" /> {{i.name}} - ${{i.price}}
         </a>
     </div>
         {% endfor %}
