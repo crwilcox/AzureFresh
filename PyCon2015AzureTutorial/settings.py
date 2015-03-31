@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'app',
     'registration',
     'crispy_forms',
+    'bootstrap3',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

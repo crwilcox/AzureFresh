@@ -1,14 +1,19 @@
 {% extends "app/layout.html" %}
 {% load i18n %}
+{% load bootstrap3 %}
 
 {% block content %}
 
 <h2>Register</h2>
 
-<form method="post" action="?next={{ next }}">{% csrf_token %}
+<form method="post" action="?next={{ next }}" class="form-horizontal">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' %}
 
-  {{ form.as_p }}
-
-  <input type="submit" value="{% trans 'Submit' %}" />
+    {% buttons %}
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="{% trans 'Submit' %}" class="btn btn-primary" />
+    </div>
+    {% endbuttons %}
 </form>
 {% endblock %}
