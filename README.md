@@ -83,9 +83,7 @@ Getting AppInsights running in your django app is very straightforward.
 4. Open app/\_\_init\_\_.py and add the following to the beginning
 
 	from applicationinsights.exceptions import enable
-	# set up exception capture
-
-	enable('<YOUR INSTRUMENTATION KEY GOES HERE>')
+	enable('YOUR INSTRUMENTATION KEY GOES HERE')
 
 5. Go to https://github.com/Microsoft/AppInsights-Python for more examples
 
