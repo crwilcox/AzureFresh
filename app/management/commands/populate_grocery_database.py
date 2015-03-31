@@ -5,9 +5,10 @@ import csv
 class Command(BaseCommand):
     args = ''
     help = ''
-    BASE_IMAGE_URL = 'http://azurefresh.blob.core.windows.net/image-store/'
 
     def _populate_db(self):
+        BASE_IMAGE_URL = 'http://azurefresh.blob.core.windows.net/image-store/'
+
         import os
         with open(os.path.join('app', 'management', 'commands', 'grocery.csv'), 'r') as csvfile:
             reader = csv.reader(csvfile)

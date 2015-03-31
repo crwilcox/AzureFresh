@@ -9,6 +9,10 @@
 ## Clone this Repo ##
 	git clone https://github.com/crwilcox/PyCon2015AzureTutorial.git
 
+
+## Install requirements from requirements.txt ##
+	pip install -r requirements.txt
+	
 ## Setup the database ##
 We need to setup the SQLite database. Run the syncdb command and setup a superuser (if desired) to your database.
 	
@@ -83,9 +87,7 @@ Getting AppInsights running in your django app is very straightforward.
 4. Open app/\_\_init\_\_.py and add the following to the beginning
 
 	from applicationinsights.exceptions import enable
-	# set up exception capture
-
-	enable('<YOUR INSTRUMENTATION KEY GOES HERE>')
+	enable('YOUR INSTRUMENTATION KEY GOES HERE')
 
 5. Go to https://github.com/Microsoft/AppInsights-Python for more examples
 
