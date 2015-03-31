@@ -7,15 +7,16 @@
     <p class="lead">Your online source for fruits and vegetables!</p>
 </div>
 <div class="row">
-    <div class="col-md-3">
-        {% for i in products %}
-            {% if forloop.counter0|divisibleby:4 %}
+{% for i in products %}
+    {% if forloop.counter0|divisibleby:6 and forloop.counter0 != 0 %}
         </div>
         <div class="row">
-            {% endif %}
-            <a href="{% url 'product' %}{{i.id}}">
-                <img src="{{base_image_url}}{{i.image_link}}" width="200" />
-            </a>
+    {% endif %}
+    <div class="col-md-2">
+        <a href="{% url 'product' %}{{i.id}}">
+            <img src="{{base_image_url}}{{i.image_link}}" width="150" />
+        </a>
+    </div>
         {% endfor %}
     </div>
 </div>

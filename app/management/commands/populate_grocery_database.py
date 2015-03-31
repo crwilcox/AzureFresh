@@ -13,9 +13,10 @@ class Command(BaseCommand):
         with open(os.path.join('app', 'management', 'commands', 'grocery.csv'), 'r') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                print(row)
                 p = Product(name=row[0], price=row[1], image_link=BASE_IMAGE_URL + row[2], description=row[3])
                 p.save()
+
+        print('Added Grocery Items to the Database')
 
     def handle(self, *args, **options):
         self._populate_db()
