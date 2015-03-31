@@ -46,6 +46,19 @@ class UserProfileForm(forms.ModelForm):
         self.instance.user.email = self.cleaned_data.get('email')
         self.instance.user.save()
 
+    def parse_ugly_xml(self, text):
+        doc = ElementTree.fromstring(text)
+        a = doc.find('{http://www.w3.org/2005/Atom}entry')
+        b = a.find('{http://www.w3.org/2005/Atom}content')
+        c = b.find('{http://schemas.microsoft.com/ado/2007/08/dataservices/metadata}properties')
+        new_address = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}AddressLine')
+        new_suite = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}Suite')
+        new_address_combined = "{} {}".format(new_address, new_suite).strip()
+        new_city = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}City')
+        new_state = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}State')
+        new_zip_code = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}ZipCode')
+        return new_address_combined, new_city, new_state, new_zip_code
+
     def clean(self):
         import requests
         from xml.etree import ElementTree
@@ -53,7 +66,7 @@ class UserProfileForm(forms.ModelForm):
         cleaned_data = super(UserProfileForm, self).clean()
         
         # Validate the Address of the User
-        
+
         return cleaned_data
 
     class Meta:
