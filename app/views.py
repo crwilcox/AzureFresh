@@ -11,6 +11,7 @@ from datetime import datetime
 from app.models import UserProfile
 from app.forms import UserProfileForm
 from app.models import Product
+import requests
 
 def home(request):
     """Renders the home page."""
@@ -32,31 +33,26 @@ def home(request):
 def product(request):
     assert isinstance(request, HttpRequest)
 
-    try:
-        import requests
+    # get id
+    id = int(request.path.split('/')[-1])
+    product = Product.objects.get(id=id)
 
-        # get id
-        id = int(request.path.split('/')[-1])
-        product = Product.objects.get(id=id)
+    # Figure out recommended purchases.
 
-        # Figure out recommended purchases.
+    """Renders the product page."""
+    return render(
+        request,
+        'app/product.html',
+        context_instance = RequestContext(request,
+        {
+            'title':product.name,
+            'description':product.description,
+            'price':product.price,
+            'image':product.image_link,
+            'year':datetime.now().year,
+        })
+    )
 
-        """Renders the product page."""
-        return render(
-            request,
-            'app/product.html',
-            context_instance = RequestContext(request,
-            {
-                'title':product.name,
-                'description':product.description,
-                'price':product.price,
-                'image':product.image_link,
-                'year':datetime.now().year,
-            })
-        )
-    except:
-        return home(request)
-    
 
 @login_required
 def profile(request):

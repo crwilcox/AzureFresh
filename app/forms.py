@@ -8,6 +8,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import StrictButton
 from app.models import UserProfile
+from xml.etree import ElementTree
 
 class UserProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=False)
