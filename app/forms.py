@@ -9,6 +9,7 @@ from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import StrictButton
 from app.models import UserProfile
 from xml.etree import ElementTree
+import requests
 
 class UserProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=False)
@@ -58,10 +59,7 @@ class UserProfileForm(forms.ModelForm):
         new_zip_code = c.findtext('{http://schemas.microsoft.com/ado/2007/08/dataservices}ZipCode')
         return new_address_combined, new_city, new_state, new_zip_code
 
-    def clean(self):
-        import requests
-        from xml.etree import ElementTree
-        
+    def clean(self):        
         cleaned_data = super(UserProfileForm, self).clean()
         
         # Validate the Address of the User
