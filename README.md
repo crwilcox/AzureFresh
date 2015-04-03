@@ -19,7 +19,20 @@ Go to [http://aka.ms/AzureTrial](http://aka.ms/AzureTrial) and get a trial.
 ## Create Virtual Environment and install requirements ##
 	python -m venv env
 	pip install -r requirements.txt
-	
+
+## Go to [portal.azure.com](portal.azure.com) and make a web app (website) ##
+Once you create this site feel free to leave this tab open as we will be coming back to this.
+
+## Go back to the Azure Portal setup Continuous Deployment ##
+Browse to the web app we created and click on continuous deployment.  Set this up to use local git.
+If this is your first time setting up a site you will need to create a deployment user as well.
+
+NOTE: if for some reason you see 'null' as your username go to Deployment Credentials and try again.
+
+After this, go to settings for the web app you created will be a string for git that resembles this:
+ 
+	https://USER@WEB_APP_NAME.scm.azurewebsites.net:443/WEB_APP_NAME.git
+
 ## Setup the database ##
 We need to setup the SQLite database. Run the syncdb command and setup a superuser (if desired) to your database.
 	
@@ -34,19 +47,6 @@ We need to commit the db to Git so we will have it later for the Git Deployment
 
 	git add db.sqlite3
 	git commit -m 'added sqlite db'
-
-## Go to [portal.azure.com](portal.azure.com) and make a web app (website) ##
-Once you create this site feel free to leave this tab open as we will be coming back to this.
-
-## Go back to the Azure Portal setup Continuous Deployment ##
-Browse to the web app we created and click on continuous deployment.  Set this up to use local git.
-If this is your first time setting up a site you will need to create a deployment user as well.
-
-NOTE: if for some reason you see 'null' as your username go to Deployment Credentials and try again.
-
-After this, go to settings for the web app you created will be a string for git that resembles this:
- 
-	https://USER@WEB_APP_NAME.scm.azurewebsites.net:443/WEB_APP_NAME.git
 
 ## Push your changes to the git deployment ##
 
