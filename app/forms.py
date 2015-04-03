@@ -70,6 +70,8 @@ class UserProfileForm(forms.ModelForm):
         # Verify the address using the data marketplace service
         # https://datamarket.azure.com/dataset/melissadata/addresscheck
 
+        # Parse the returned text
+
         # Compare entered address with validated address
 
         return cleaned_data
