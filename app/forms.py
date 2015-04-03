@@ -65,6 +65,11 @@ class UserProfileForm(forms.ModelForm):
         cleaned_data = super(UserProfileForm, self).clean()
         
         # Validate the Address of the User
+        # Get address data from cleaned data
+
+        # Verify the address using the data marketplace service
+
+        # Compare entered address with validated address
 
         return cleaned_data
 

@@ -1,0 +1,50 @@
+
+	
+# --- CODE SNIPPETS BELOW ---
+
+# Form.py : Address Validation
+        address = cleaned_data.get('address', '')
+        city = cleaned_data.get('city', '')
+        state = cleaned_data.get('state', '')
+        zip_code = cleaned_data.get('zip_code', '')
+
+        # Verify the address using the data marketplace
+        full_address = "'{}, {}, {} {}'".format(address, city, state, zip_code)
+        # https://datamarket.azure.com/dataset/melissadata/addresscheck
+        uri = "https://api.datamarket.azure.com/MelissaData/AddressCheck/v1/SuggestAddresses"
+        data = {'Address':full_address, 'MaximumSuggestions':1, 'MinimumConfidence':0.25}
+        account_key = 'PAAWRFiAqLKRLswTxyVxT9wbb4torRFs/HpZowgPrDg='
+        req = requests.get(uri, params=data, auth=('', account_key))
+
+        new_address_combined, new_city, new_state, new_zip_code = self.parse_ugly_xml(req.text)
+
+        if new_address_combined != address or new_city != city or new_state != state or new_zip_code != zip_code:
+            # Correct the address
+            cleaned_data['address'] = new_address_combined
+            cleaned_data['city'] = new_city
+            cleaned_data['state'] = new_state
+            cleaned_data['zip_code'] = new_zip_code
+            raise forms.ValidationError("Your address was validated and updated with corrected content.  Please submit again if it is correct.")
+
+
+# Views.py : Purchase Recommendations
+        # use frequently bought together to get recommendations
+        # https://datamarket.azure.com/dataset/amla/mba
+        uri = 'https://api.datamarket.azure.com/data.ashx/amla/mba/v1/Score'
+        data = {'Id':'Train', 'Item':id}
+        account_key = '5dxIeDWCg/dwSclY/mvt929z26mf/RnHKNXeqDN2he8='
+        req = requests.get(uri, params=data, auth=('', account_key))
+
+        #req.text is a dictionary in text.  Can Eval it here...
+        recommend = eval(req.text)['ItemSet'][1:]
+        recommend_products = []
+
+        # now that we have the id(s) of recomendations we should expand to the product
+        for i in recommend:
+            recommend_products.append(Product.objects.get(id=int(i)))
+
+		# ADD TO THE RETURN
+        'recommended_products':recommend_products,
+
+#templates/app/Product.html : Purchase Recommendations
+	Uncomment

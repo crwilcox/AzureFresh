@@ -33,11 +33,15 @@ def home(request):
 def product(request):
     assert isinstance(request, HttpRequest)
 
-    # get id
     id = int(request.path.split('/')[-1])
     product = Product.objects.get(id=id)
 
     # Figure out recommended purchases.
+    # Use data marketplace service to get recommendations
+
+    # Parse the returned text
+
+    # Make a list of Product objects for the view
 
     """Renders the product page."""
     return render(
@@ -49,6 +53,7 @@ def product(request):
             'description':product.description,
             'price':product.price,
             'image':product.image_link,
+            # add the recommended_products
             'year':datetime.now().year,
         })
     )

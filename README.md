@@ -40,6 +40,9 @@ Once you create this site feel free to leave this tab open as we will be coming 
 
 ## Go back to the Azure Portal setup Continuous Deployment ##
 Browse to the web app we created and click on continuous deployment.  Set this up to use local git.
+If this is your first time setting up a site you will need to create a deployment user as well.
+
+NOTE: if for some reason you see 'null' as your username go to Deployment Credentials and try again.
 
 After this, go to settings for the web app you created will be a string for git that resembles this:
  
@@ -85,6 +88,8 @@ Provides many data offerings that are free or available for a small fee.  Most o
 This market place includes things authored by Microsoft as well as third parties.  You can offer these as well if you would like for users.
 
 [Browse The Microsoft Azure Marketplace](https://datamarket.azure.com/browse)
+If this is your first time to the Marketplace you may have to register for azure market place account. This is a simple process though and only involves your name and email
+
 
 ## Add Support for Address Validation ##
 This offering is offered by Melissa Data.  This is an example of a third party selling their data service on the Azure Data Market
@@ -102,61 +107,3 @@ We can train our model here: [https://marketbasket.cloudapp.net/](https://market
 I mentioned the above sample is from Azure ML.  We offer a data studio experience for authoring these offerings.  It allows you to make your own predictive models and publish them for consumption for yourself or others.
 
 [https://studio.azureml.net/](https://studio.azureml.net/ "https://studio.azureml.net/")
-
-	
-# --- CODE SNIPPETS BELOW ---
-
-# Form.py : Address Validation
-        address = cleaned_data.get('address', '')
-        city = cleaned_data.get('city', '')
-        state = cleaned_data.get('state', '')
-        zip_code = cleaned_data.get('zip_code', '')
-        full_address = "'{}, {}, {} {}'".format(address, city, state, zip_code)
-
-        # Verify the address using the data marketplace
-        # https://datamarket.azure.com/dataset/melissadata/addresscheck
-        uri = "https://api.datamarket.azure.com/MelissaData/AddressCheck/v1/SuggestAddresses"
-        data = {'Address':full_address, 'MaximumSuggestions':1, 'MinimumConfidence':0.25}
-        account_key = 'PAAWRFiAqLKRLswTxyVxT9wbb4torRFs/HpZowgPrDg='
-        req = requests.get(uri, params=data, auth=('', account_key))
-
-        if not req.ok:
-            raise Exception(req.text)
-
-        new_address_combined, new_city, new_state, new_zip_code = self.parse_ugly_xml(req.text)
-
-        if new_address_combined != address or new_city != city or new_state != state or new_zip_code != zip_code:
-            # Correct the address
-            cleaned_data['address'] = new_address_combined
-            cleaned_data['city'] = new_city
-            cleaned_data['state'] = new_state
-            cleaned_data['zip_code'] = new_zip_code
-            raise forms.ValidationError("Your address was validated and updated with corrected content.  Please submit again if it is correct.")
-
-
-# Views.py : Purchase Recommendations
-        # use frequently bought together to get recommendations
-        # https://datamarket.azure.com/dataset/amla/mba
-        uri = 'https://api.datamarket.azure.com/data.ashx/amla/mba/v1/Score'
-        data = {'Id':'Train', 'Item':id}
-        account_key = '5dxIeDWCg/dwSclY/mvt929z26mf/RnHKNXeqDN2he8='
-        req = requests.get(uri, params=data, auth=('', account_key))
-
-        #req.text is a dictionary in text.  Can Eval it here...
-        recommend = eval(req.text)['ItemSet'][1:]
-        recommend_products = []
-
-        # now that we have the id(s) of recomendations we should expand to the product
-        for i in recommend:
-            recommend_products.append(Product.objects.get(id=int(i)))
-
-		# ADD TO THE RETURN
-        'recommended_products':recommend_products,
-
-#templates/app/Product.html : Purchase Recommendations
-	<div class="row">
-	    <h3>Here are some other things you may be interested in:</h3>
-	    {% for i in recommended_products %}
-	        <a href="{% url 'product' %}{{i.id}}"><img src="{{i.image_link}}" width="100"/> {{ i.name }} - ${{price}}</a> <br />
-	    {% endfor %}
-	</div>
