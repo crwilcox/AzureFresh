@@ -41,5 +41,5 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=512)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     image_link = models.CharField(max_length=100)
