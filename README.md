@@ -90,7 +90,6 @@ This market place includes things authored by Microsoft as well as third parties
 [Browse The Microsoft Azure Marketplace](https://datamarket.azure.com/browse)
 If this is your first time to the Marketplace you may have to register for azure market place account. This is a simple process though and only involves your name and email
 
-
 ## Add Support for Address Validation ##
 This offering is offered by Melissa Data.  This is an example of a third party selling their data service on the Azure Data Market
 

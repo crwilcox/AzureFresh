@@ -12,6 +12,7 @@ from app.models import UserProfile
 from app.forms import UserProfileForm
 from app.models import Product
 import requests
+import json
 
 def home(request):
     """Renders the home page."""
@@ -38,6 +39,7 @@ def product(request):
 
     # Figure out recommended purchases.
     # Use data marketplace service to get recommendations
+    # https://datamarket.azure.com/dataset/amla/mba
 
     # Parse the returned text
 
