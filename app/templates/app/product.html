@@ -18,7 +18,7 @@
 <div class="row">
     <h3>Here are some other things you may be interested in:</h3>
     {% for i in recommended_products %}
-    <a href="{% url 'product' %}{{i.id}}"><img src="{{i.image_link}}" width="100"/> {{ i.name }} - ${{price}}</a> <br />
+    <a href="{% url 'product' %}{{i.id}}"><img src="{{i.image_link}}" width="100"/> {{ i.name }} - ${{i.price}}</a> <br />
     {% endfor %}
 </div>
 -->
