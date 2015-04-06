@@ -61,16 +61,21 @@ class UserProfileForm(forms.ModelForm):
 
     def clean(self):        
         cleaned_data = super(UserProfileForm, self).clean()
-        
+    
+
         # Validate the Address of the User
         # Get address data from cleaned data
+
 
         # Verify the address using the data marketplace service
         # https://datamarket.azure.com/dataset/melissadata/addresscheck
 
+
         # Parse the returned text
 
+
         # Compare entered address with validated address
+
 
         return cleaned_data
 

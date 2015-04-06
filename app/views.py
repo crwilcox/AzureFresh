@@ -37,13 +37,17 @@ def product(request):
     id = int(request.path.split('/')[-1])
     product = Product.objects.get(id=id)
 
+
     # Figure out recommended purchases.
     # Use data marketplace service to get recommendations
     # https://datamarket.azure.com/dataset/amla/mba
 
+
     # Parse the returned text
 
+
     # Make a list of Product objects for the view
+
 
     """Renders the product page."""
     return render(
