@@ -13,6 +13,7 @@ __pycache__/
 /obj/
 /dist/
 /MANIFEST
+/static
 
 # Result of running python setup.py install/pip install -e
 /build/
