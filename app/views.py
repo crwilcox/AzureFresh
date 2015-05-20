@@ -13,9 +13,17 @@ from app.forms import UserProfileForm
 from app.models import Product
 import requests
 import json
+from applicationinsights import TelemetryClient
+import config
+from recommendationservice import RecommendationService
+
+tc = TelemetryClient('104f9dca-6034-42a1-a646-7c66230710e7')
 
 def home(request):
     """Renders the home page."""
+
+    tc.track_event('home page reached')
+    tc.flush()
     assert isinstance(request, HttpRequest)
 
     products = Product.objects.order_by('id')
@@ -37,17 +45,14 @@ def product(request):
     id = int(request.path.split('/')[-1])
     product = Product.objects.get(id=id)
 
-
-    # Figure out recommended purchases.
     # Use data marketplace service to get recommendations
-    # https://datamarket.azure.com/dataset/amla/mba
+    rs = RecommendationService(config.azure_datamarket_email, config.azure_datamarket_access_key)
+    recommendations = rs.get_recommendation(config.model_id, [ str(id) ])
+    recommend_products = [ Product.objects.get(id=int(r.id)) for r in recommendations ]
 
-
-    # Parse the returned text
-
-
-    # Make a list of Product objects for the view
-
+    # print recommendations to console for debugging of recommendations
+    for r in recommendations:
+        print("id:{}, name:{} rating:{} reasoning:{}".format(r.id, r.name, r.rating, r.reasoning))
 
     """Renders the product page."""
     return render(
@@ -60,6 +65,7 @@ def product(request):
             'price':product.price,
             'image':product.image_link,
             # add the recommended_products
+            'recommended_products':recommend_products,
             'year':datetime.now().year,
         })
     )

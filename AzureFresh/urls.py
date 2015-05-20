@@ -1,5 +1,5 @@
 """
-Definition of urls for PyCon2015AzureTutorial.
+Definition of urls for AzureFresh.
 """
 
 from datetime import datetime

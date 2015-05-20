@@ -1,5 +1,3 @@
-
-	
 # --- CODE SNIPPETS BELOW ---
 
 # Form.py : Address Validation
@@ -42,7 +40,7 @@
     req = requests.get(uri, params=data, auth=('', account_key))
 
     # Parse the returned text
-    recommend = json.loads(req.text)['ItemSet'][1:]
+    recommend = req.json()['ItemSet'][1:]
 
     # Make a list of Product objects for the view
     recommend_products = []
@@ -51,4 +49,4 @@
 
 
 #templates/app/Product.html : Purchase Recommendations
-	Uncomment
+	Uncomment Html Code

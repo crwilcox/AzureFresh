@@ -6,9 +6,10 @@
 3. Setup Environment
 4. Create an Azure Web App/Website
 5. Deploy to Azure using Git Deployment
-6. Add Address Validation using Azure Data Marketplace offering
-7. Add Purchase Recommendation using Azure Data Marketplace offering.
-8. App Insights
+6. App Insights
+7. Add Address Validation using Azure Data Marketplace offering
+8. Add Purchase Recommendation using Azure Data Marketplace offering.
+
 
 ## Get an Azure account ##
 Go to [http://aka.ms/AzureTrial](http://aka.ms/AzureTrial) and get a trial.
@@ -23,7 +24,7 @@ Go to [http://aka.ms/AzureTrial](http://aka.ms/AzureTrial) and get a trial.
 ## Go to [portal.azure.com](portal.azure.com) and make a web app (website) ##
 Once you create this site feel free to leave this tab open as we will be coming back to this.
 
-## Go back to the Azure Portal setup Continuous Deployment ##
+## In the Azure Portal setup Continuous Deployment ##
 Browse to the web app we created and click on continuous deployment.  Set this up to use local git.
 If this is your first time setting up a site you will need to create a deployment user as well.
 
@@ -32,21 +33,6 @@ NOTE: if for some reason you see 'null' as your username go to Deployment Creden
 After this, go to settings for the web app you created will be a string for git that resembles this:
  
 	https://USER@WEB_APP_NAME.scm.azurewebsites.net:443/WEB_APP_NAME.git
-
-## Setup the database ##
-We need to setup the SQLite database. Run the syncdb command and setup a superuser (if desired) to your database.
-	
-	python manage.py syncdb
-
-Next, we can populate the database with items.  I have included a management command that does this.  Images are hosted on an azure storage account.
-
-	python manage.py populate_grocery_database
-
-## Commit the SQLite db ##
-We need to commit the db to Git so we will have it later for the Git Deployment
-
-	git add db.sqlite3
-	git commit -m 'added sqlite db'
 
 ## Push your changes to the git deployment ##
 
@@ -62,23 +48,36 @@ Getting AppInsights running in your django app is very straightforward.
 
 Go to the Azure portal and browse under Application Insights.  There should be an instance under the same name as your Django Website.
 
-Get the instrumentation key under settings to insert to the below code
+Get the instrumentation key under settings to use as the parameter for creating clients.
 
 pip install applicationinsights
 
-To get unhandled exception handling: open app/\_\_init\_\_.py and add the following to the beginning
+Add applicationinsights to requirements.txt so when we deploy to azure this is present.
+
+### Add JavaScript Snippet to get logging for site ###
+When under the application insights page click on one of the not-yet-done graphs.  This should get you to a tab that has the ability to get a snippet.  Copy this snippet into layout.html and you will get client side logging of things like response and page views
+
+### Using WSGI Middleware to get a good amount of logging for free ###
+
+In wsgi.py we can add a few lines at the end of the file which will give us a large amount of the logging for free.
+
+	from applicationinsights.requests import WSGIApplication
+	application = WSGIApplication('<YOUR INSTRUMENTATION KEY GOES HERE>', application)
+
+### Unhandled Exception Logging ###
+Application Insights supports handling unhandled exceptions.  To get this handling: open app/\_\_init\_\_.py and add the following to the beginning
 
 	from applicationinsights.exceptions import enable
 	enable('<YOUR INSTRUMENTATION KEY GOES HERE>')
 
-Logging PageViews.  In views.py
+### Logging events manually ###
+Application Insights also supports manual event logging.  You can log, for instance, we can send an event when the homepage is loaded by adding the following code.
 	
 	from applicationinsights import TelemetryClient
 	tc = TelemetryClient('<YOUR INSTRUMENTATION KEY GOES HERE>')
 	
 	# in each view you want to track
-    tc.track_pageview('home', request.get_full_path(), properties = {'username': request.user.username})
-    tc.flush()
+    tc.track_event('home page loaded')
 
 Go to [https://github.com/Microsoft/AppInsights-Python](https://github.com/Microsoft/AppInsights-Python) for more examples
 
@@ -93,14 +92,18 @@ If this is your first time to the Marketplace you may have to register for azure
 ## Add Support for Address Validation ##
 This offering is offered by Melissa Data.  This is an example of a third party selling their data service on the Azure Data Market
 
-1. Use Azure Marketplace: [https://datamarket.azure.com/dataset/melissadata/addresscheck](https://datamarket.azure.com/dataset/melissadata/addresscheck)
+[https://datamarket.azure.com/dataset/melissadata/addresscheck](https://datamarket.azure.com/dataset/melissadata/addresscheck)
+
+For code see spoilers.txt
 
 ## Add Support for Product Recommendations ##
 This offering is made by Azure ML and is an example of an offering from Microsoft.
 
-Use Azure Marketplace: [https://datamarket.azure.com/dataset/amla/mba](https://datamarket.azure.com/dataset/amla/mba)
+[https://datamarket.azure.com/dataset/amla/mba](https://datamarket.azure.com/dataset/amla/mba)
 
 We can train our model here: [https://marketbasket.cloudapp.net/](https://marketbasket.cloudapp.net/)
+
+For code see spoilers.txt 
 
 ## Azure ML ##
 I mentioned the above sample is from Azure ML.  We offer a data studio experience for authoring these offerings.  It allows you to make your own predictive models and publish them for consumption for yourself or others.

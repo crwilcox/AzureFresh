@@ -1,5 +1,5 @@
 """
-Django settings for PyCon2015AzureTutorial project.
+Django settings for AzureFresh project.
 """
 
 from os import path
@@ -114,10 +114,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'PyCon2015AzureTutorial.urls'
+ROOT_URLCONF = 'AzureFresh.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'PyCon2015AzureTutorial.wsgi.application'
+WSGI_APPLICATION = 'AzureFresh.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or
