@@ -50,10 +50,6 @@ def product(request):
     recommendations = rs.get_recommendation(config.model_id, [ str(id) ])
     recommend_products = [ Product.objects.get(id=int(r.id)) for r in recommendations ]
 
-    # print recommendations to console for debugging of recommendations
-    for r in recommendations:
-        print("id:{}, name:{} rating:{} reasoning:{}".format(r.id, r.name, r.rating, r.reasoning))
-
     """Renders the product page."""
     return render(
         request,

@@ -63,14 +63,12 @@ class UserProfileForm(forms.ModelForm):
     def clean(self):        
         cleaned_data = super(UserProfileForm, self).clean()
     
-
         # Validate the Address of the User
         # Get address data from cleaned data
         address = cleaned_data.get('address', '')
         city = cleaned_data.get('city', '')
         state = cleaned_data.get('state', '')
         zip_code = cleaned_data.get('zip_code', '')
-        
 
         # Verify the address using the data marketplace service
         # https://datamarket.azure.com/dataset/melissadata/addresscheck
@@ -79,11 +77,9 @@ class UserProfileForm(forms.ModelForm):
         data = {'Address':full_address, 'MaximumSuggestions':1, 'MinimumConfidence':0.25}
         account_key = config.azure_datamarket_access_key
         req = requests.get(uri, params=data, auth=('', account_key))
-        
 
         # Parse the returned text
         new_address_combined, new_city, new_state, new_zip_code = self.parse_ugly_xml(req.text)
-        
 
         # Compare entered address with validated address
         if new_address_combined != address or new_city != city or new_state != state or new_zip_code != zip_code:
@@ -92,8 +88,8 @@ class UserProfileForm(forms.ModelForm):
             cleaned_data['city'] = new_city
             cleaned_data['state'] = new_state
             cleaned_data['zip_code'] = new_zip_code
-            raise forms.ValidationError("Your address was validated and updated with corrected content.  Please submit again if it is correct.")
-        
+            raise forms.ValidationError(
+                "Your address was validated and updated with corrected content.  Please submit again if it is correct.")
 
         return cleaned_data
 
