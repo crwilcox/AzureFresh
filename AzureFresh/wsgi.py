@@ -24,7 +24,5 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
 # Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)
 from applicationinsights.requests import WSGIApplication
 application = WSGIApplication('104f9dca-6034-42a1-a646-7c66230710e7', application)
