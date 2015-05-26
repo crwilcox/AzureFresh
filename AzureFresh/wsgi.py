@@ -25,4 +25,8 @@ application = get_wsgi_application()
 
 # Apply WSGI middleware here.
 from applicationinsights.requests import WSGIApplication
-application = WSGIApplication('104f9dca-6034-42a1-a646-7c66230710e7', application)
+
+def get_application_insights_hook():
+    return WSGIApplication('104f9dca-6034-42a1-a646-7c66230710e7', application)
+
+application = get_application_insights_hook()

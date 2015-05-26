@@ -19,7 +19,7 @@ Go to [http://aka.ms/AzureTrial](http://aka.ms/AzureTrial) and get a trial.
 
 <div id='2'/>
 ## Clone this Repo ##
-	git clone https://github.com/crwilcox/PyCon2015AzureTutorial.git
+	git clone https://github.com/crwilcox/AzureFresh.git
 
 <div id='3'/>
 ## Create Virtual Environment and install requirements ##
