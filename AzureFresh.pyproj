@@ -85,8 +85,8 @@
     <Content Include="app\templates\registration\profile.html" />
     <Content Include="app\templates\registration\registration_complete.html" />
     <Content Include="app\templates\registration\registration_form.html" />
+    <Content Include="db.sqlite3" />
     <Content Include="web.config" />
-    <None Include="AzureFreshMarket.pubxml" />
     <Content Include="requirements.txt" />
     <Content Include="app\static\app\content\bootstrap.css" />
     <Content Include="app\static\app\content\bootstrap.min.css" />
