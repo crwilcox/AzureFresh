@@ -9,7 +9,6 @@ Here is some sample code on how to implement the test case we have left incomple
 import unittest
 from app.models import Product
 from unittest import mock
-import httpretty
 
 class Test_product_model(unittest.TestCase):
     def test_get_recommendations(self):
