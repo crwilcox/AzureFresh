@@ -143,7 +143,7 @@ This offering is made by Azure ML and is an example of an offering from Microsof
 
 For this example we are going to use a python library from [https://github.com/crwilcox/RecommendationService](https://github.com/crwilcox/RecommendationService).  This library wraps the web calls in a way that is more easy for us to use.
 
-There are two parts to using the recommendations service.  We need build a model and consume a model. We only need to build a model once but we expect to consume our model frequently.
+There are two parts to using the recommendations service.  We need to build a model and consume a model. We only need to build a model once but we expect to consume our model frequently.
 
 ### Building our Model
 
@@ -178,6 +178,8 @@ print('Built a model. Model ID:{} Build ID:{}'.format(model_id, build_id))
 ```
 
 ### Consuming our Model (Getting Recommendations)
+
+This is done in model.py under the Product class.  Here is a sample of how you can consume this service.
 
 ```python
  	# Use data marketplace service to get recommendations

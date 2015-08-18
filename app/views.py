@@ -1,4 +1,4 @@
-"""
+﻿"""
 Definition of views.
 """
 
@@ -15,7 +15,6 @@ import requests
 import json
 from applicationinsights import TelemetryClient
 import config
-from recommendationservice import RecommendationService
 
 tc = TelemetryClient('104f9dca-6034-42a1-a646-7c66230710e7')
 
@@ -45,11 +44,6 @@ def product(request):
     id = int(request.path.split('/')[-1])
     product = Product.objects.get(id=id)
 
-    # Use data marketplace service to get recommendations
-    rs = RecommendationService(config.azure_datamarket_email, config.azure_datamarket_access_key)
-    recommendations = rs.get_recommendation(config.model_id, [ str(id) ])
-    recommend_products = [ Product.objects.get(id=int(r.id)) for r in recommendations ]
-
     """Renders the product page."""
     return render(
         request,
@@ -61,7 +55,7 @@ def product(request):
             'price':product.price,
             'image':product.image_link,
             # add the recommended_products
-            'recommended_products':recommend_products,
+            'recommended_products':product.recommended_items,
             'year':datetime.now().year,
         })
     )
